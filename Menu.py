@@ -12,7 +12,7 @@ class Menu:
         pygame.init()
         self.title = "Asteroids   Plus"
         self.title_font = pygame.font.Font('Galaxus-z8Mow.ttf', 100)
-        self.title_text = self.title_font.render(self.title, True, WHITE)
+        self.title_text = self.title_font.render(self.title, True, GREEN)
         self.title_y = 150
         self.title_y_velocity = 0.20
         # load screen and images for background
