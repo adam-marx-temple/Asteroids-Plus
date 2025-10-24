@@ -5,6 +5,8 @@ from button import *
 from leaderboard import *
 from instructions import *
 from CoOp import *
+from redditView import *
+
 import pygame.font
 
 class Menu:
@@ -28,14 +30,18 @@ class Menu:
         self.bg_stars_x2 = WIN_WIDTH
         # init clock for FPS
         self.clock = pygame.time.Clock()
+        # reddit view
+        self.reddit_view = redditView(self.screen)
+
 
         self.running = True
         self.playButton = Button((WIN_WIDTH/2 - 130, WIN_HEIGHT/2 - 150), (100, 100), WHITE, "PLAY")
         self.shipSelect = Button((WIN_WIDTH/2 -50, WIN_HEIGHT/2), (100, 100), WHITE, "SHIP", 'Images/ships/ship-a/ship-a-damaged.png')
         self.exitButton = Button((WIN_WIDTH/2 -50, WIN_HEIGHT/2 + 150), (100, 100), WHITE, "EXIT")
         self.statButton = Button((WIN_WIDTH/2 -50, WIN_HEIGHT/2 + 300), (100, 100), WHITE, "STATS")
-        self.instructionsButton = Button((WIN_WIDTH - 120, WIN_HEIGHT - 70), (100, 50), WHITE, "Help")
+        self.instructionsButton = Button((WIN_WIDTH - 120, WIN_HEIGHT - 70), (100, 50), WHITE, "HELP")
         self.coOpButton = Button((WIN_WIDTH/2 + 20, WIN_HEIGHT/2 - 150), (100, 100), WHITE, "CO-OP")
+
 
         
     def draw(self):
@@ -64,6 +70,8 @@ class Menu:
         self.statButton.draw(self.screen,BLACK)
         self.instructionsButton.draw(self.screen,BLACK)
         self.coOpButton.draw(self.screen,BLACK)
+        
+        self.reddit_view.draw()
     
         pygame.display.update()
 
@@ -124,6 +132,14 @@ class Menu:
                         c.new() #create a new game everytime we run
                         while c.running:
                             c.main()
+
+                if self.reddit_view.is_button_clicked(event):
+                    if not self.reddit_view.posts:
+                        print("Fetching posts from r/Temple...")
+                        posts = redditView.getPostsFromTempleSubreddit()
+                        self.reddit_view.set_posts(posts)
+                    else:
+                        self.reddit_view.next_post()                    
 
                 if self.exitButton.is_clicked(event):
                     # exit
